@@ -12,24 +12,27 @@ import javax.swing.JOptionPane;
 
 public class DB {
 	
-	public static Connection DBConnection()
-	{
-		Connection conn = null;
-		try
-		{
-			Class.forName("com.mysql.jdbc.Driver");
-		
-			conn = DriverManager.getConnection("jdbc:mysql://localhost/caddey","root", "");
-			System.out.print("Database is connected !");
-			
-		}
-		catch(Exception e)
-		{
-			JOptionPane.showMessageDialog(null, "Do not connect to DB - Error:"+e);
-		
-		}
-		return conn;
-	}
+	public static Connection DBConnection() {
+  	  String url = "jdbc:mysql://localhost:3306/your_database_name?useSSL=false";
+        String user = "root";  
+        String password = "WangHW2016";  
+
+        try (Connection conn = DriverManager.getConnection(url, user, password);
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery("SELECT id, name FROM employees")) {
+            // Connected to the MySQL server successfully.
+            System.out.println("Connected to the MySQL server successfully.");
+            // Processing the result set
+            while (rs.next()) {
+                int id = rs.getInt("id");
+                String name = rs.getString("name");
+                System.out.println("Employee ID: " + id + ", Name: " + name);
+            }
+        } catch (SQLException e) {
+            System.out.println("SQL Error: " + e.getMessage());
+        }
+		return null;
+    }
 	public static void addProductToDB(String id,String detail,String comp,int quan)
 	{
 		Connection conn=DBConnection();
